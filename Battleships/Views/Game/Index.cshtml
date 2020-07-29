@@ -1,0 +1,47 @@
+﻿@using Battleships.Models
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome To BattleShips</h1>
+    <button class="battleship-UI">Start New Game</button>
+</div>
+
+<table class="battleship-grid">
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+        <td>D</td>
+        <td>E</td>
+        <td>F</td>
+        <td>G</td>
+        <td>H</td>
+        <td>I</td>
+        <td>J</td>
+    </tr>
+    @{foreach (int[] row in @Model.GetBoard())
+        {
+            @:<tr>
+                foreach (int cell in row)
+                {
+                    if (cell != 0)
+                    {
+                        @:<td>1</td>
+                    }
+                    else
+                    {
+                        @:<td></td>
+                    }
+                }
+            @:</tr>
+        }
+    }
+</table>
+
+<div class="text-center battleship-UI">
+    <input class="battleship-UI" type="text" placeholder="Enter coordinates here"></input>
+    <button class="battleship-UI fire">Fire</button>
+</div>
+
+
