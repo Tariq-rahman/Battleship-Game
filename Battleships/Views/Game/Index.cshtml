@@ -1,10 +1,10 @@
 ﻿@using Battleships.Models
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Game";
 }
 <div class="text-center">
     <h1 class="display-4">Welcome To BattleShips</h1>
-    <button class="battleship-UI">Start New Game</button>
+    <button class="battleship-UI" onclick="reload()">Start New Game</button>
 </div>
 
 
@@ -52,7 +52,7 @@
 
 
 <div class="popupmodal" id="hit">
-    <div class="modal-content">       
+    <div class="modal-content">
         <h1>HIT!</h1>
     </div>
 </div>
@@ -62,12 +62,28 @@
     </div>
 </div>
 <div class="popupmodal" id="win">
-    <div class="modal-content">
+    <div class="modal-content">        
         <h1>YOU WIN!</h1>
     </div>
 </div>
 
-<script>
+<script>    
+    
+    /**
+     *  Toggles the specified modal
+     * param id: the id of the modal to toggle
+     * param bool temp: (true )temporary toggle or (false) permanent toggle
+     */
+    function toggleModal(id, temp) {
+        var modal = document.getElementById(id);
+        modal.classList.toggle("show-modal");
+
+        if (temp) {
+            //close modal after 1 seconds
+            setTimeout(() => { modal.classList.toggle("show-modal"); }, 1000);                                               
+        }        
+    }    
+
     /**
      * Gets the input value from the text field
      * returns x and y coordinate values
@@ -75,7 +91,7 @@
     function getInputValue() {
         let value = document.getElementById("text-input").value;
         let x = value.match('[a-jA-J]')
-        let y = value.match('[1-9]|10');
+        let y = value.match('10|[1-9]');
         if (x == null || y == null) {
             alert("you have invalid coordinates");
             return null;
@@ -86,6 +102,7 @@
         x = x.charCodeAt(0) - 96;
         return [x, y];
     }
+
     /**
      * Fires a missile at the target coordinates
      * sets the cell color to red if a ship was hit
@@ -94,7 +111,7 @@
     function fire() {
         let coordinates = getInputValue();
         let row = document.getElementsByClassName('row-' + coordinates[1]);
-
+        
         cell = row[0].children.item(coordinates[0] - 1);
         if (cell.classList.contains('fired')) {
             alert("you have already fired on this cell");
@@ -102,25 +119,30 @@
         }
         if (cell.classList.contains('ship')) {
             cell.style.background = "red";
-            showHitModal('hit');
+            cell.classList.remove('ship');
+            cell.classList.add('sunk');
+            toggleModal('hit', true);            
+            CheckWinCondition()
         } else {
             cell.style.background = "grey";
-            showHitModal('miss');
+            toggleModal('miss', true);
         }
         cell.classList.add('fired')
     }
+
     /**
      * Checks if the win conditions have been met
      * */
     function CheckWinCondition() {
-
+        let ships = document.getElementsByClassName('ship');
+        console.log(ships);
+        if (ships.length == 0) {
+            toggleModal('win', true);
+        }
+    }  
+    
+    function reload() {
+        location.reload(false);
     }
-
-    function showHitModal(id) {
-        var modal = document.getElementById(id);
-        modal.classList.toggle("show-modal");
-        //close modal after 1 seconds
-        setTimeout(() => { modal.classList.toggle("show-modal"); }, 1000);
-    }
-
+    
 </script>

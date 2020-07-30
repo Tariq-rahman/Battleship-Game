@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Battleships.Models;
+using Battleships.Helpers;
+using System.Drawing;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Battleships.Controllers
 {
     public class GameController : Controller
-    {
-        private readonly ILogger<GameController> _logger;
-        private Board gameBoard;
-        public GameController(ILogger<GameController> logger)
-        {
-            _logger = logger;
+    {        
+        private Board gameBoard;        
+        public GameController()
+        {            
             gameBoard = new Board();
-            AddRandomShip(4);
-            AddRandomShip(5);
-            AddRandomShip(4);
+            AddShip(ShipSizes.HMS_ELIZABETH, CalculateRandomPoints(ShipSizes.HMS_ELIZABETH));
+            AddShip(ShipSizes.HMS_DEFENDER, CalculateRandomPoints(ShipSizes.HMS_DEFENDER));         
+            AddShip(ShipSizes.HMS_DUNCAN,  CalculateRandomPoints(ShipSizes.HMS_DEFENDER));
+            //AddShip(2, CalculateRandomPoints(2));
+
         }
 
         public IActionResult Index()
@@ -27,7 +31,15 @@ namespace Battleships.Controllers
             return View(gameBoard);
         }
 
-        public void AddRandomShip(int shipSize)
+        public void AddShip(int size, List<Point> points)
+        {            
+            foreach(Point p in points)
+            {
+                gameBoard.SetCellValue(p.X, p.Y, 1);
+            }            
+        }
+
+        public List<Point> CalculateRandomPoints(int shipSize)
         {
             Random random = new Random();
             int x = 0;
@@ -48,32 +60,35 @@ namespace Battleships.Controllers
 
             } while (!isOrientationValid(x, y, orientation, shipSize));
 
-            AddShip(x, y, orientation, shipSize);
+            return GeneratePoints(x, y, orientation, shipSize);
         }
 
-        public void AddShip(int x, int y, int orientation, int shipSize)
+        public List<Point> GeneratePoints(int x, int y, int orientation, int shipSize)
         {
+            List<Point> points = new List<Point>();
             for (int i = 0; i < shipSize; i++)
-            {
-                gameBoard.SetCellValue(x, y, 1);
+            {                
+                Point point = new Point(x, y);
+                points.Add(point);
 
-                if (orientation == 1)
+                if (orientation == Orientation.NORTH)
                 {
                     y--;
                 }
-                else if (orientation == 2)
+                else if (orientation == Orientation.EAST)
                 {
                     x++;
                 }
-                else if (orientation == 3)
+                else if (orientation == Orientation.SOUTH)
                 {
                     y++;
                 }
-                else if (orientation == 4)
+                else if (orientation == Orientation.WEST)
                 {
                     x--;
                 }
-            }                                 
+            }
+            return points;
         }
 
         public bool IsEmpty(int x, int y)
@@ -100,7 +115,7 @@ namespace Battleships.Controllers
 
         public bool isOrientationValid( int xOrigin, int yOrigin, int orientation, int size)
         {
-            if(orientation == 1)//up
+            if(orientation == Orientation.NORTH)
             {
                 int yEnd = yOrigin - (size - 1);
                 //check if end section of ship is valid/empty
@@ -118,7 +133,7 @@ namespace Battleships.Controllers
                     }
                 }
             }
-            else if (orientation == 2)//right
+            else if (orientation == Orientation.EAST)
             {
                 int xEnd = xOrigin + (size - 1);
                 //check if end section of ship is valid/empty
@@ -137,7 +152,7 @@ namespace Battleships.Controllers
                 }
 
             }
-            else if (orientation == 3)//down
+            else if (orientation == Orientation.SOUTH)
             {
                 int yEnd = yOrigin + (size - 1);
                 //check if end section of ship is valid/empty
@@ -155,7 +170,7 @@ namespace Battleships.Controllers
                     }
                 }
             }
-            else if (orientation == 4)//left
+            else if (orientation == Orientation.WEST)
             {
                 int xEnd = xOrigin - (size - 1);
                 //check if end section of ship is valid/empty
