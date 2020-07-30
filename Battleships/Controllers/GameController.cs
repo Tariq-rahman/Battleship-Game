@@ -19,9 +19,9 @@ namespace Battleships.Controllers
         public GameController()
         {            
             gameBoard = new Board();
-            AddShip(ShipSizes.HMS_ELIZABETH, CalculateRandomPoints(ShipSizes.HMS_ELIZABETH));
-            AddShip(ShipSizes.HMS_DEFENDER, CalculateRandomPoints(ShipSizes.HMS_DEFENDER));         
-            AddShip(ShipSizes.HMS_DUNCAN,  CalculateRandomPoints(ShipSizes.HMS_DEFENDER));
+            AddShip(ShipSizes.HMS_ELIZABETH, CalculateRandomPoints(ShipSizes.HMS_ELIZABETH), ShipTypes.HMS_ELIZABETH);
+            AddShip(ShipSizes.HMS_DEFENDER, CalculateRandomPoints(ShipSizes.HMS_DEFENDER), ShipTypes.HMS_DEFENDER);         
+            AddShip(ShipSizes.HMS_DUNCAN,  CalculateRandomPoints(ShipSizes.HMS_DEFENDER), ShipTypes.HMS_DUNCAN);
             //AddShip(2, CalculateRandomPoints(2));
 
         }
@@ -31,11 +31,11 @@ namespace Battleships.Controllers
             return View(gameBoard);
         }
 
-        public void AddShip(int size, List<Point> points)
+        public void AddShip(int size, List<Point> points, int shipType)
         {            
             foreach(Point p in points)
             {
-                gameBoard.SetCellValue(p.X, p.Y, 1);
+                gameBoard.SetCellValue(p.X, p.Y, shipType);
             }            
         }
 

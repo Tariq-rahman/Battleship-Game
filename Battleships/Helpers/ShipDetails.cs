@@ -11,4 +11,10 @@ namespace Battleships.Helpers
         public static int HMS_DUNCAN = 4;
         public static int HMS_DEFENDER = 4;
     }
+    public class ShipTypes
+    {
+        public static int HMS_ELIZABETH = 1;
+        public static int HMS_DUNCAN = 2;
+        public static int HMS_DEFENDER = 3;
+    }
 }

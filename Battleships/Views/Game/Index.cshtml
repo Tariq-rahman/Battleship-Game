@@ -31,7 +31,7 @@
                 {
                     if (cell != 0)
                     {
-                        @:<td class="col-@y ship" bgcolor="orange"></td>
+                        @:<td class="col-@y ship ship-type-@cell" bgcolor="orange"></td>
                     }
                     else
                     {
@@ -49,7 +49,9 @@
     <input class="battleship-UI" type="text" id="text-input" placeholder="Enter coordinates here"></input>
     <button class="battleship-UI fire" onclick="fire()">Fire</button>
 </div>
-
+<span class="ship-indicator" id="1">HMS Elizabeth - OK</span>
+<span class="ship-indicator" id="2">HMS Duncan - OK</span>
+<span class="ship-indicator" id="3">HMS Defender - OK </span>
 
 <div class="popupmodal" id="hit">
     <div class="modal-content">
@@ -110,8 +112,8 @@
      */
     function fire() {
         let coordinates = getInputValue();
-        let row = document.getElementsByClassName('row-' + coordinates[1]);
-        
+        let row = document.getElementsByClassName('row-' + coordinates[1]);        
+
         cell = row[0].children.item(coordinates[0] - 1);
         if (cell.classList.contains('fired')) {
             alert("you have already fired on this cell");
@@ -121,8 +123,10 @@
             cell.style.background = "red";
             cell.classList.remove('ship');
             cell.classList.add('sunk');
-            toggleModal('hit', true);            
-            CheckWinCondition()
+            cell.classList.remove()
+            toggleModal('hit', true);
+            updateShipIndicators();
+            checkWinCondition();
         } else {
             cell.style.background = "grey";
             toggleModal('miss', true);
@@ -133,13 +137,39 @@
     /**
      * Checks if the win conditions have been met
      * */
-    function CheckWinCondition() {
-        let ships = document.getElementsByClassName('ship');
-        console.log(ships);
+    function checkWinCondition() {
+        let ships = document.getElementsByClassName('ship');       
         if (ships.length == 0) {
             toggleModal('win', true);
         }
-    }  
+    } 
+    
+    /**
+     * Checks if the ship is sunk     
+     * param id: id of the ship
+     */
+    function checkSunk(id) {
+        let ships = document.getElementsByClassName('ship-type-' + id);        
+
+        for (i = 0; i < ships.length; i++) {
+            if (ships[i].classList.contains('sunk')) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;          
+    }
+
+    function updateShipIndicators() {
+        let ships = document.getElementsByClassName("ship-indicator");
+        for (i = 0; i < ships.length; i++) {           
+             if (checkSunk(ships[i].id)) {
+                ships[i].textContent = "SUNK";
+             }
+            console.log('test');
+        }
+    }
     
     function reload() {
         location.reload(false);
