@@ -7,6 +7,7 @@
     <button class="battleship-UI">Start New Game</button>
 </div>
 
+
 <table class="battleship-grid">
     <tr>
         <td>A</td>
@@ -20,28 +21,106 @@
         <td>I</td>
         <td>J</td>
     </tr>
-    @{foreach (int[] row in @Model.GetBoard())
+    @{
+        int x = 1;
+        foreach (int[] row in @Model.GetBoard())
         {
-            @:<tr>
+            int y = 1;
+            @:<tr class="row-@x">
                 foreach (int cell in row)
                 {
                     if (cell != 0)
                     {
-                        @:<td>1</td>
+                        @:<td class="col-@y ship" bgcolor="orange"></td>
                     }
                     else
                     {
-                        @:<td></td>
+                        @:<td class="col-@y" bgcolor="lightblue"></td>
                     }
+                    y++;
                 }
             @:</tr>
+            x++;
         }
     }
 </table>
 
 <div class="text-center battleship-UI">
-    <input class="battleship-UI" type="text" placeholder="Enter coordinates here"></input>
-    <button class="battleship-UI fire">Fire</button>
+    <input class="battleship-UI" type="text" id="text-input" placeholder="Enter coordinates here"></input>
+    <button class="battleship-UI fire" onclick="fire()">Fire</button>
 </div>
 
 
+<div class="popupmodal" id="hit">
+    <div class="modal-content">       
+        <h1>HIT!</h1>
+    </div>
+</div>
+<div class="popupmodal" id="miss">
+    <div class="modal-content">
+        <h1>MISS!</h1>
+    </div>
+</div>
+<div class="popupmodal" id="win">
+    <div class="modal-content">
+        <h1>YOU WIN!</h1>
+    </div>
+</div>
+
+<script>
+    /**
+     * Gets the input value from the text field
+     * returns x and y coordinate values
+     */
+    function getInputValue() {
+        let value = document.getElementById("text-input").value;
+        let x = value.match('[a-jA-J]')
+        let y = value.match('[1-9]|10');
+        if (x == null || y == null) {
+            alert("you have invalid coordinates");
+            return null;
+        }
+        x = x[0];
+        y = y[0].toLowerCase();
+        //convert letter system to number coordinates
+        x = x.charCodeAt(0) - 96;
+        return [x, y];
+    }
+    /**
+     * Fires a missile at the target coordinates
+     * sets the cell color to red if a ship was hit
+     * sets the cell color to grey if missile missed
+     */
+    function fire() {
+        let coordinates = getInputValue();
+        let row = document.getElementsByClassName('row-' + coordinates[1]);
+
+        cell = row[0].children.item(coordinates[0] - 1);
+        if (cell.classList.contains('fired')) {
+            alert("you have already fired on this cell");
+            return false;
+        }
+        if (cell.classList.contains('ship')) {
+            cell.style.background = "red";
+            showHitModal('hit');
+        } else {
+            cell.style.background = "grey";
+            showHitModal('miss');
+        }
+        cell.classList.add('fired')
+    }
+    /**
+     * Checks if the win conditions have been met
+     * */
+    function CheckWinCondition() {
+
+    }
+
+    function showHitModal(id) {
+        var modal = document.getElementById(id);
+        modal.classList.toggle("show-modal");
+        //close modal after 1 seconds
+        setTimeout(() => { modal.classList.toggle("show-modal"); }, 1000);
+    }
+
+</script>

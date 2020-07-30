@@ -9,6 +9,8 @@ namespace Battleships.Models
     {
         private bool IsShipSet;
         private int[][] board;
+        public static int MAX_SIZE = 9;
+        public static int MIN_SIZE = 0;
         //creates an empty board with no ships
         public Board()
         {

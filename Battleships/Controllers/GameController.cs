@@ -17,9 +17,9 @@ namespace Battleships.Controllers
         {
             _logger = logger;
             gameBoard = new Board();
-            RandomShipCoordinates(4);
-            RandomShipCoordinates(5);
-            RandomShipCoordinates(4);
+            AddRandomShip(4);
+            AddRandomShip(5);
+            AddRandomShip(4);
         }
 
         public IActionResult Index()
@@ -27,7 +27,7 @@ namespace Battleships.Controllers
             return View(gameBoard);
         }
 
-        public void RandomShipCoordinates(int shipSize)
+        public void AddRandomShip(int shipSize)
         {
             Random random = new Random();
             int x = 0;
@@ -88,9 +88,8 @@ namespace Battleships.Controllers
 
         public bool IsValid(int x, int y)
         {
-            //check for out of bounds exceptions
-            //todo replace magic numbers with board size variables
-            if(x > 9 || x < 0 || y > 9 || y < 0)
+            //check for out of bounds exceptions            
+            if(x > Board.MAX_SIZE || x < Board.MIN_SIZE || y > Board.MAX_SIZE || y < Board.MIN_SIZE)
             {
                 return false;
             } else
