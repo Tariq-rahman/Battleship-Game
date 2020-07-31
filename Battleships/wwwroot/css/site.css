@@ -93,7 +93,7 @@ table, th, td {
 .battleship-UI, button {
     margin-bottom: 10px;
 }
-
+/* Modal styling*/
 .popupmodal {
     position: fixed;
     left: 0;
@@ -135,7 +135,7 @@ table, th, td {
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
-
+/* Ship indicator styling*/
 .ship-indicator {
     color: green;
     text-align: center;

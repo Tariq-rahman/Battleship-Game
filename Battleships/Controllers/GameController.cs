@@ -21,9 +21,7 @@ namespace Battleships.Controllers
             gameBoard = new Board();
             AddShip(ShipSizes.HMS_ELIZABETH, CalculateRandomPoints(ShipSizes.HMS_ELIZABETH), ShipTypes.HMS_ELIZABETH);
             AddShip(ShipSizes.HMS_DEFENDER, CalculateRandomPoints(ShipSizes.HMS_DEFENDER), ShipTypes.HMS_DEFENDER);         
-            AddShip(ShipSizes.HMS_DUNCAN,  CalculateRandomPoints(ShipSizes.HMS_DEFENDER), ShipTypes.HMS_DUNCAN);
-            //AddShip(2, CalculateRandomPoints(2));
-
+            AddShip(ShipSizes.HMS_DUNCAN,  CalculateRandomPoints(ShipSizes.HMS_DEFENDER), ShipTypes.HMS_DUNCAN);            
         }
 
         public IActionResult Index()
@@ -31,6 +29,7 @@ namespace Battleships.Controllers
             return View(gameBoard);
         }
 
+        // Adds a list of points as a ship onto the board grid
         public void AddShip(int size, List<Point> points, int shipType)
         {            
             foreach(Point p in points)
@@ -38,7 +37,9 @@ namespace Battleships.Controllers
                 gameBoard.SetCellValue(p.X, p.Y, shipType);
             }            
         }
-
+        // Finds a random unoccupied cell then generates a random orientation
+        // based off origin cell and orientation it generates a list of points 
+        // that the ship occupies
         public List<Point> CalculateRandomPoints(int shipSize)
         {
             Random random = new Random();
@@ -62,7 +63,7 @@ namespace Battleships.Controllers
 
             return GeneratePoints(x, y, orientation, shipSize);
         }
-
+        //Generates the list of points that ship will occupy based on orientation
         public List<Point> GeneratePoints(int x, int y, int orientation, int shipSize)
         {
             List<Point> points = new List<Point>();
@@ -90,7 +91,7 @@ namespace Battleships.Controllers
             }
             return points;
         }
-
+        //Checks if cell is empty
         public bool IsEmpty(int x, int y)
         {
             int value = gameBoard.GetBoard()[x][y];
@@ -100,7 +101,7 @@ namespace Battleships.Controllers
             }
             return true;
         }
-
+        //checks if cell is valid
         public bool IsValid(int x, int y)
         {
             //check for out of bounds exceptions            
@@ -112,7 +113,7 @@ namespace Battleships.Controllers
                 return true;
             }
         }
-
+        //Checks if the orientation is valid, i.e ship is not over edge of board
         public bool isOrientationValid( int xOrigin, int yOrigin, int orientation, int size)
         {
             if(orientation == Orientation.NORTH)
