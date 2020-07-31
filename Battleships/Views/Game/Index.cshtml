@@ -122,8 +122,7 @@
         if (cell.classList.contains('ship')) {
             cell.style.background = "red";
             cell.classList.remove('ship');
-            cell.classList.add('sunk');
-            cell.classList.remove()
+            cell.classList.add('sunk');            
             toggleModal('hit', true);
             updateShipIndicators();
             checkWinCondition();
@@ -151,7 +150,7 @@
     function checkSunk(id) {
         let ships = document.getElementsByClassName('ship-type-' + id);        
 
-        for (i = 0; i < ships.length; i++) {
+        for (let i = 0; i < ships.length; i++) {
             if (ships[i].classList.contains('sunk')) {
                 continue;
             } else {
@@ -163,11 +162,11 @@
 
     function updateShipIndicators() {
         let ships = document.getElementsByClassName("ship-indicator");
-        for (i = 0; i < ships.length; i++) {           
+        
+        for (let i = 0; i < ships.length; i++) {             
              if (checkSunk(ships[i].id)) {
                 ships[i].textContent = "SUNK";
-             }
-            console.log('test');
+            }                       
         }
     }
     
