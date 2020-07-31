@@ -8,4 +8,4 @@ See the challenge doc for the project specification
 - Press CTRL + F5 to start up the local server and play the game
 - Enter coordinates to fire a missile at the target cell, sink all ships to win
 - Reloading the page will restart the game
-
+- If you wish to see the ships for testing purposes comment line 36 and uncomment line 37 in https://github.com/Tariq-rahman/Battleship-Game/blob/master/Battleships/Views/Game/Index.cshtml
