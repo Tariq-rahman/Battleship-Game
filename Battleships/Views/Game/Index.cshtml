@@ -10,6 +10,7 @@
 
 <table class="battleship-grid">
     <tr>
+        <td></td>
         <td>A</td>
         <td>B</td>
         <td>C</td>
@@ -27,6 +28,7 @@
         {
             int y = 1;
             @:<tr class="row-@x">
+                @:<td>@x</td>
                 foreach (int cell in row)
                 {
                     if (cell != 0)
@@ -49,9 +51,15 @@
     <input class="battleship-UI" type="text" id="text-input" placeholder="Enter coordinates here"></input>
     <button class="battleship-UI fire" onclick="fire()">Fire</button>
 </div>
-<span class="ship-indicator" id="1">HMS Elizabeth - OK</span>
-<span class="ship-indicator" id="2">HMS Duncan - OK</span>
-<span class="ship-indicator" id="3">HMS Defender - OK </span>
+<p class="ship-indicator" id="1">HMS Elizabeth:
+    <span class="ship-status"> OK </span>
+</p>
+<p class="ship-indicator" id="2">HMS Duncan:
+    <span class="ship-status"> OK </span>
+</p>
+<p class="ship-indicator" id="3">HMS Defender:
+    <span class="ship-status"> OK </span>
+</p>
 
 <div class="popupmodal" id="hit">
     <div class="modal-content">
@@ -163,9 +171,11 @@
     function updateShipIndicators() {
         let ships = document.getElementsByClassName("ship-indicator");
         
-        for (let i = 0; i < ships.length; i++) {             
+        for (let i = 0; i < ships.length; i++) {
+            console.log();
              if (checkSunk(ships[i].id)) {
-                ships[i].textContent = "SUNK";
+                 ships[i].children[0].textContent = "SUNK";
+                 ships[i].children[0].classList.add("sunk");                
             }                       
         }
     }

@@ -73,6 +73,7 @@ body {
 /*battleship grid styling*/
 table, th, td {
     border: 1px solid black;
+    text-align: center;
     table-layout: fixed;
     width: 30px;
     height: 30px;
@@ -87,10 +88,10 @@ table, th, td {
     height: 40px;
 }
 .battleship-UI {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .battleship-UI, button {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .popupmodal {
@@ -133,4 +134,16 @@ table, th, td {
     visibility: visible;
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.ship-indicator {
+    color: green;
+    text-align: center;
+    padding-top:10px;
+    margin-bottom: 0px;
+}
+
+.ship-status.sunk {
+    color: white;
+    background: red;
 }
